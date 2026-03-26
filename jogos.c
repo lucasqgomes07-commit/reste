@@ -8,7 +8,7 @@ void cobraNaCaixa();
 void gousmasWar();
 
 int main() {
-    srand(time(NULL)); // Aleatoriedade para Gousmas War e Cobra na Caixa
+    srand(time(NULL));
     int escolha = 0;
 
     while (escolha != 4) {
@@ -68,48 +68,91 @@ void perguntaResposta() {
         } while(opcao!=1 && opcao!=2);
     } while(opcao==1);
 }
-
-// ================== COBRA NA CAIXA ==================
 void cobraNaCaixa() {
-    int caixaEscolhida, cobra, botao, opcao;
-    do {
-        cobra = rand() % 5 + 1;
-        botao = rand() % 5 + 1;
-        while(botao==cobra) botao = rand() % 5 + 1;
+    int jogar = 1;
+
+    while(jogar == 1) {
+
+        int caixas[5] = {0,0,0,0,0}; 
+        int abertas[5] = {0,0,0,0,0};
+        int botao, cobra;
+        int escolha;
+        int jogadorAtual;
+
+        char *nomes[7] = {"lucas", "fernando", "ivi", "pedro", "nice", "Fernanda", "rosana"};
+        int jogador1, jogador2;
 
         printf("\n=== COBRA NA CAIXA ===\n");
-        printf("Voce encontrou 5 caixas. Uma tem o botão, outra uma cobra!\n");
 
-        int caixasAbertas[5] = {0,0,0,0,0};
-        int jogoAcabou = 0;
+        int i = 0;
+        while(i < 7) {
+            printf("%d - %s\n", i, nomes[i]);
+            i++;
+        }
 
-        while(!jogoAcabou) {
-            do {
-                printf("Escolha uma caixa de 1 a 5: ");
-                scanf("%d", &caixaEscolhida);
-            } while(caixaEscolhida<1 || caixaEscolhida>5 || caixasAbertas[caixaEscolhida-1]);
+        printf("Escolha o jogador 1 (0-6): ");
+        scanf("%d", &jogador1);
 
-            caixasAbertas[caixaEscolhida-1] = 1;
+        printf("Escolha o jogador 2 (0-6): ");
+        scanf("%d", &jogador2);
 
-            if(caixaEscolhida==cobra) { 
-                printf("A cobra estava na caixa %d! Game Over!\n", cobra);
-                jogoAcabou=1;
-            } else if(caixaEscolhida==botao) {
-                printf("Parabens! Voce encontrou o botao e abriu a porta!\n");
-                jogoAcabou=1;
-            } else {
-                printf("A caixa esta vazia. Continue!\n");
+        jogadorAtual = rand() % 2;
+        
+        botao = rand() % 5;
+        do {
+            cobra = rand() % 5;
+        } while(cobra == botao);
+
+        caixas[botao] = 1;
+        caixas[cobra] = 2;
+
+        printf("\n%s começa!\n", jogadorAtual == 0 ? nomes[jogador1] : nomes[jogador2]);
+
+        int fim = 0;
+
+        while(fim == 0) {
+
+            printf("\nVez de %s\n", jogadorAtual == 0 ? nomes[jogador1] : nomes[jogador2]);
+
+            printf("Escolha uma caixa (1-5): ");
+            scanf("%d", &escolha);
+
+            escolha--;
+
+            if(escolha < 0 || escolha > 4) {
+                printf("Escolha invalida! Tente novamente.\n");
+                continue;
+            }
+
+            if(abertas[escolha] == 1) {
+                printf("Essa caixa ja foi aberta! Escolha outra.\n");
+                continue;
+            }
+
+            abertas[escolha] = 1;
+
+            if(caixas[escolha] == 1) {
+                printf("\nBOTAO! %s venceu!\n", jogadorAtual == 0 ? nomes[jogador1] : nomes[jogador2]);
+                fim = 1;
+            }
+            else if(caixas[escolha] == 2) {
+                printf("\nCOBRA! %s perdeu!\n", jogadorAtual == 0 ? nomes[jogador1] : nomes[jogador2]);
+                fim = 1;
+            }
+            else {
+                printf("Caixa vazia...\n");
+                jogadorAtual = 1 - jogadorAtual; 
             }
         }
 
-        do {
-            printf("\n1 - Jogar novamente\n2 - Voltar ao menu\nEscolha: ");
-            scanf("%d", &opcao);
-        } while(opcao!=1 && opcao!=2);
+        printf("\n1 - Jogar novamente\n2 - Voltar ao menu\nEscolha: ");
+        scanf("%d", &jogar);
 
-    } while(opcao==1);
+        if(jogar == 2) {
+            jogar = 0;
+        }
+    }
 }
-
 // ================== GOUSMAS WAR ==================
 void gousmasWar() {
     int jogarNovamente;
@@ -179,4 +222,5 @@ void gousmasWar() {
         } while(jogarNovamente!=1 && jogarNovamente!=2);
 
     } while(jogarNovamente==1);
+    return 0;
 }
