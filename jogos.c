@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
+// ================== MENU PRINCIPAL ==================
+int lerInteiro();
 void perguntaResposta();
 void cobraNaCaixa();
 void gousmasWar();
@@ -10,16 +13,12 @@ int main() {
     srand(time(NULL));
     int escolha = 0;
 
-    while (escolha != 4) {
+    while(escolha != 4){
         printf("\n=== MENU PRINCIPAL ===\n");
-        printf("1 - Pergunta e Resposta\n");
-        printf("2 - Cobra na Caixa!\n");
-        printf("3 - Gousmas War\n");
-        printf("4 - Sair\n");
-        printf("Escolha uma opcao: ");
-        scanf("%d", &escolha);
+        printf("1 - Pergunta e Resposta\n2 - Cobra na Caixa!\n3 - Gousmas War\n4 - Sair\nEscolha uma opcao: ");
+        escolha = lerInteiro();
 
-        switch(escolha) {
+        switch(escolha){
             case 1: perguntaResposta(); break;
             case 2: cobraNaCaixa(); break;
             case 3: gousmasWar(); break;
@@ -31,195 +30,244 @@ int main() {
     return 0;
 }
 
+// ================== FUNÇÃO DE LEITURA ==================
+int lerInteiro() {
+    int valor;
+    int ok;
+    while(1) {
+        ok = scanf("%d", &valor);
+        if(ok == 1) return valor;
+        printf("Entrada invalida! Digite um numero: ");
+        while(getchar() != '\n'); // limpa buffer
+    }
+}
+
 // ================== PERGUNTA E RESPOSTA ==================
 void perguntaResposta() {
     int resposta, pontos, opcao;
     do {
         pontos = 0;
         printf("\n=== JOGO PERGUNTA E RESPOSTA ===\n");
-        printf("Voce respondera 5 perguntas sobre a Primeira Guerra Mundial.\nCada acerto vale 1 ponto.\n\n");
 
-        printf("1) Em que ano comecou a Primeira Guerra Mundial?\n1-1910  2-1912  3-1914  4-1916\n");
-        scanf("%d", &resposta);
-        if(resposta==3){ printf("Correto!\n\n"); pontos++; } else printf("Errado! 1914\n\n");
+        printf("1) Em que ano comecou a Primeira Guerra Mundial?\n1-1910 2-1912 3-1914 4-1916\n");
+        resposta = lerInteiro();
+        if(resposta == 3){ printf("Correto!\n\n"); pontos++; } else printf("Errado! 1914\n\n");
 
-        printf("2) Qual evento iniciou a guerra?\n1-Invasao da Polonia  2-Assassinato do arquiduque Francisco Ferdinando\n3-Revolucao Francesa  4-Ataque a Pearl Harbor\n");
-        scanf("%d", &resposta);
-        if(resposta==2){ printf("Correto!\n\n"); pontos++; } else printf("Errado! Assassinato do arquiduque\n\n");
+        printf("2) Qual evento iniciou a guerra?\n1-Invasao da Polonia 2-Assassinato do arquiduque\n3-Revolucao Francesa 4-Ataque a Pearl Harbor\n");
+        resposta = lerInteiro();
+        if(resposta == 2){ printf("Correto!\n\n"); pontos++; } else printf("Errado!\n\n");
 
-        printf("3) Em que ano terminou a guerra?\n1-1915 2-1916 3-1917 4-1918\n");
-        scanf("%d", &resposta);
-        if(resposta==4){ printf("Correto!\n\n"); pontos++; } else printf("Errado! 1918\n\n");
+        printf("3) Em que ano terminou?\n1-1915 2-1916 3-1917 4-1918\n");
+        resposta = lerInteiro();
+        if(resposta == 4){ printf("Correto!\n\n"); pontos++; } else printf("Errado!\n\n");
 
-        printf("4) Qual pais fazia parte da Triplice Entente?\n1-Alemanha 2-Austria-Hungria 3-Franca 4-Imperio Otomano\n");
-        scanf("%d", &resposta);
-        if(resposta==3){ printf("Correto!\n\n"); pontos++; } else printf("Errado! Franca\n\n");
+        printf("4) Qual pais da Triplice Entente?\n1-Alemanha 2-Austria 3-Franca 4-Otomano\n");
+        resposta = lerInteiro();
+        if(resposta == 3){ printf("Correto!\n\n"); pontos++; } else printf("Errado!\n\n");
 
-        printf("5) Qual tratado encerrou oficialmente a guerra?\n1-Tratado de Roma 2-Tratado de Paris 3-Tratado de Viena 4-Tratado de Versalhes\n");
-        scanf("%d", &resposta);
-        if(resposta==4){ printf("Correto!\n\n"); pontos++; } else printf("Errado! Tratado de Versalhes\n\n");
+        printf("5) Qual tratado encerrou?\n1-Roma 2-Paris 3-Viena 4-Versalhes\n");
+        resposta = lerInteiro();
+        if(resposta == 4){ printf("Correto!\n\n"); pontos++; } else printf("Errado!\n\n");
 
-        printf("Voce fez %d de 5 pontos!\n", pontos);
+        printf("Voce fez %d pontos!\n", pontos);
 
-        do {
-            printf("\n1 - Jogar novamente\n2 - Voltar ao menu\nEscolha: ");
-            scanf("%d", &opcao);
-        } while(opcao!=1 && opcao!=2);
-    } while(opcao==1);
+        printf("\n1 - Jogar novamente\n2 - Voltar\n");
+        opcao = lerInteiro();
+    } while(opcao == 1);
 }
+
+// ================== COBRA NA CAIXA ==================
 void cobraNaCaixa() {
     int jogar = 1;
 
     while(jogar == 1) {
-
-        int caixas[5] = {0,0,0,0,0}; 
-        int abertas[5] = {0,0,0,0,0};
+        int caixas[5] = {0}, abertas[5] = {0};
         int botao, cobra;
-        int escolha;
-        int jogadorAtual;
-
-        char *nomes[7] = {"lucas", "fernando", "ivi", "pedro", "nice", "Fernanda", "rosana"};
-        int jogador1, jogador2;
+        char *nomes[7] = {"lucas","fernando","ivi","pedro","nice","Fernanda","rosana"};
+        int jogador1, jogador2, jogadorAtual, fim = 0, escolha;
 
         printf("\n=== COBRA NA CAIXA ===\n");
 
         int i = 0;
-        while(i < 7) {
-            printf("%d - %s\n", i, nomes[i]);
-            i++;
-        }
+        while(i < 7) { printf("%d - %s\n", i, nomes[i]); i++; }
 
-        printf("Escolha o jogador 1 (0-6): ");
-        scanf("%d", &jogador1);
+        printf("Jogador 1 (numero do nome): "); jogador1 = lerInteiro();
+        printf("Jogador 2 (numero do nome): "); jogador2 = lerInteiro();
 
-        printf("Escolha o jogador 2 (0-6): ");
-        scanf("%d", &jogador2);
-
-        jogadorAtual = rand() % 2;
-        
         botao = rand() % 5;
-        do {
-            cobra = rand() % 5;
-        } while(cobra == botao);
-
+        do { cobra = rand() % 5; } while(cobra == botao);
         caixas[botao] = 1;
         caixas[cobra] = 2;
 
-        printf("\n%s come�a!\n", jogadorAtual == 0 ? nomes[jogador1] : nomes[jogador2]);
+        jogadorAtual = rand() % 2;
+        fim = 0;
 
-        int fim = 0;
-
-        while(fim == 0) {
-
-            printf("\nVez de %s\n", jogadorAtual == 0 ? nomes[jogador1] : nomes[jogador2]);
-
+        while(!fim) {
+            printf("\nTurno de %s\n", jogadorAtual == 0 ? nomes[jogador1] : nomes[jogador2]);
             printf("Escolha uma caixa (1-5): ");
-            scanf("%d", &escolha);
+            escolha = lerInteiro() - 1;
 
-            escolha--;
-
-            if(escolha < 0 || escolha > 4) {
+            if(escolha < 0 || escolha > 4){
                 printf("Escolha invalida! Tente novamente.\n");
                 continue;
             }
-
-            if(abertas[escolha] == 1) {
-                printf("Essa caixa ja foi aberta! Escolha outra.\n");
+            if(abertas[escolha]){
+                printf("Caixa ja aberta! Escolha outra.\n");
                 continue;
             }
 
             abertas[escolha] = 1;
 
-            if(caixas[escolha] == 1) {
-                printf("\nBOTAO! %s venceu!\n", jogadorAtual == 0 ? nomes[jogador1] : nomes[jogador2]);
+            if(caixas[escolha] == 1){
+                printf("BOTAO! %s venceu!\n", jogadorAtual==0 ? nomes[jogador1] : nomes[jogador2]);
                 fim = 1;
-            }
-            else if(caixas[escolha] == 2) {
-                printf("\nCOBRA! %s perdeu!\n", jogadorAtual == 0 ? nomes[jogador1] : nomes[jogador2]);
+            } else if(caixas[escolha] == 2){
+                printf("COBRA! %s perdeu!\n", jogadorAtual==0 ? nomes[jogador1] : nomes[jogador2]);
                 fim = 1;
-            }
-            else {
-                printf("Caixa vazia...\n");
-                jogadorAtual = 1 - jogadorAtual; 
+            } else {
+                printf("Caixa vazia. Proximo turno.\n");
+                jogadorAtual = 1 - jogadorAtual;
             }
         }
 
-        printf("\n1 - Jogar novamente\n2 - Voltar ao menu\nEscolha: ");
-        scanf("%d", &jogar);
-
-        if(jogar == 2) {
-            jogar = 0;
-        }
+        printf("\n1 - Jogar novamente\n2 - Voltar\n");
+        jogar = lerInteiro();
     }
 }
+
+// ================== FUNÇÕES AUXILIARES GOUSMAS WAR ==================
+void mostrarEstadoGW(int g1[2], int g2[2], int ativo1[2], int ativo2[2]) {
+    printf("\n--- Estado Atual ---\n");
+
+    int i=0;
+    while(i<2){
+        printf("Jogador 1 Gousma %d = ", i+1);
+        if(ativo1[i]){
+            printf("%d ", g1[i]);
+            int j=0; while(j<g1[i]){ printf("¦"); j++; }
+        } else printf("morta");
+        printf("\n");
+        i++;
+    }
+
+    i=0;
+    while(i<2){
+        printf("Jogador 2 Gousma %d = ", i+1);
+        if(ativo2[i]){
+            printf("%d ", g2[i]);
+            int j=0; while(j<g2[i]){ printf("¦"); j++; }
+        } else printf("morta");
+        printf("\n");
+        i++;
+    }
+
+    printf("-------------------\n");
+}
+
+int escolherGousmaGW(int ativo[2]) {
+    int escolha;
+    while(1){
+        printf("Escolha uma gousma ativa (1 ou 2): ");
+        escolha = lerInteiro() - 1;
+        if(escolha>=0 && escolha<=1 && ativo[escolha]) return escolha;
+        printf("Escolha invalida ou gousma morta! Tente novamente.\n");
+    }
+}
+
+void verificarDestruicaoGW(int g[2], int ativo[2]) {
+    int i=0;
+    while(i<2){
+        if(g[i]>5 && ativo[i]==1){
+            ativo[i] = 0;
+            printf("Gousma %d morreu por excesso de fúria!\n", i+1);
+        }
+        i++;
+    }
+}
+
+int semGousmasGW(int ativo[2]) {
+    return ativo[0]==0 && ativo[1]==0;
+}
+
+void dividirGousmaGW(int g[2], int ativo[2]) {
+    int origem = escolherGousmaGW(ativo);
+    int destino = (origem==0)?1:0;
+
+    if(g[origem]<=1){
+        printf("Nao ha fúria suficiente para dividir.\n");
+        return;
+    }
+
+    int valor;
+    while(1){
+        printf("Quanto transferir (min 1, sem zerar a gousma de origem): ");
+        valor = lerInteiro();
+        if(valor<1 || g[origem]-valor<=0 || g[destino]+valor>5){
+            printf("Valor invalido! Tente novamente.\n");
+            continue;
+        }
+        g[origem]-=valor;
+        g[destino]+=valor;
+        if(ativo[destino]==0) ativo[destino]=1;
+        verificarDestruicaoGW(g,ativo);
+        break;
+    }
+}
+
+void atacarGousmaGW(int atkG[2], int atkAtivo[2], int defG[2], int defAtivo[2]){
+    int atk = escolherGousmaGW(atkAtivo);
+    int alvo = escolherGousmaGW(defAtivo);
+    defG[alvo] += atkG[atk];
+    verificarDestruicaoGW(defG,defAtivo);
+}
+
 // ================== GOUSMAS WAR ==================
 void gousmasWar() {
     int jogarNovamente;
+    char nome1[50], nome2[50];
+
+    printf("Nome do jogador 1: "); getchar(); scanf("%[^\n]", nome1); getchar();
+    printf("Nome do jogador 2: "); scanf("%[^\n]", nome2); getchar();
 
     do {
-        int g1[2] = {1, 1}; 
-        int g2[2] = {1, 1}; 
-        int ativo1[2] = {1, 1};
-        int ativo2[2] = {1, 1};
-        int turno = rand() % 2;
-        int jogoAcabou = 0;
+        int g1[2] = {1,1}, g2[2] = {1,1};
+        int ativo1[2] = {1,1}, ativo2[2] = {1,1};
+        int turno = rand()%2;
+        int fim = 0;
 
-        printf("\n=== GOUSMAS WAR ===\n");
+        while(!fim){
+            mostrarEstadoGW(g1,g2,ativo1,ativo2);
+            printf("\nTurno de %s\n", turno==0?nome1:nome2);
+            printf("1 - Atacar\n2 - Dividir\n");
 
-        while (!jogoAcabou) {
             int acao;
-
-            printf("\n----------------------\n");
-            printf("Jogador 1: G1(%d)%s | G2(%d)%s\n", g1[0], ativo1[0]? "":"[X]", g1[1], ativo1[1]? "":"[X]");
-            printf("Jogador 2: G1(%d)%s | G2(%d)%s\n", g2[0], ativo2[0]? "":"[X]", g2[1], ativo2[1]? "":"[X]");
-
-            if(turno==0) printf("\nTurno do Jogador 1\n");
-            else printf("\nTurno do Jogador 2\n");
-
-            do {
-                printf("1 - Atacar\n2 - Dividir\nEscolha: ");
-                scanf("%d", &acao);
-            } while(acao!=1 && acao!=2);
-
-            if(acao==1) {
-                int atk, alvo;
-                do { printf("Escolha sua Gousma (1 ou 2): "); scanf("%d",&atk); }
-                while(atk<1 || atk>2 || (turno==0 && !ativo1[atk-1]) || (turno==1 && !ativo2[atk-1]));
-
-                do { printf("Escolha alvo inimigo (1 ou 2): "); scanf("%d",&alvo); }
-                while(alvo<1 || alvo>2 || (turno==0 && !ativo2[alvo-1]) || (turno==1 && !ativo1[alvo-1]));
-
-                if(turno==0) g2[alvo-1] += g1[atk-1];
-                else g1[alvo-1] += g2[atk-1];
-            }
-            else {
-                int origem, destino, valor;
-                do { printf("Escolha Gousma de origem (1 ou 2): "); scanf("%d",&origem); }
-                while(origem<1 || origem>2 || (turno==0 && !ativo1[origem-1]) || (turno==1 && !ativo2[origem-1]));
-
-                destino = (origem==1)?2:1;
-
-                do { printf("Quanto transferir (>=1 e nao zerar origem): "); scanf("%d",&valor); }
-                while(valor<1 || (turno==0 && valor>=g1[origem-1]) || (turno==1 && valor>=g2[origem-1]));
-
-                if(turno==0) { g1[origem-1]-=valor; g1[destino-1]+=valor; ativo1[destino-1]=1; }
-                else { g2[origem-1]-=valor; g2[destino-1]+=valor; ativo2[destino-1]=1; }
+            while(1){
+                acao = lerInteiro();
+                if(acao==1 || acao==2) break;
+                printf("Opcao invalida! Escolha 1 ou 2.\n");
             }
 
-            int i=0;
-            while(i<2) { if(g1[i]>5) ativo1[i]=0; if(g2[i]>5) ativo2[i]=0; i++; }
+            if(acao==1){
+                if(turno==0) atacarGousmaGW(g1,ativo1,g2,ativo2);
+                else          atacarGousmaGW(g2,ativo2,g1,ativo1);
+            } else{
+                if(turno==0) dividirGousmaGW(g1,ativo1);
+                else          dividirGousmaGW(g2,ativo2);
+            }
 
-            if(!ativo1[0] && !ativo1[1]) { printf("\nJogador 2 VENCEU!\n"); jogoAcabou=1; }
-            if(!ativo2[0] && !ativo2[1]) { printf("\nJogador 1 VENCEU!\n"); jogoAcabou=1; }
+            if(semGousmasGW(ativo1)){ 
+                printf("\n%s venceu!\n", nome2); 
+                fim=1; 
+            }
+            if(semGousmasGW(ativo2)){ 
+                printf("\n%s venceu!\n", nome1); 
+                fim=1; 
+            }
 
             turno = 1-turno;
         }
 
-        do {
-            printf("\n1 - Jogar novamente\n2 - Voltar ao menu\nEscolha: ");
-            scanf("%d", &jogarNovamente);
-        } while(jogarNovamente!=1 && jogarNovamente!=2);
-
+        printf("\n1 - Jogar novamente\n2 - Voltar\n");
+        jogarNovamente = lerInteiro();
     } while(jogarNovamente==1);
-    return 0;
 }
